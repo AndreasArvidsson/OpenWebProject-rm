@@ -35,7 +35,7 @@ rm("myDir", { verbose: true, recursive: true })
 ## Options
 
 Option | Description | Default
-- | - | -
+-- | -- | --
 force | Ignore nonexistant files, and never prompt before removing. | false
 recursive | Remove directories and their contents recursively. | false
 dir | Remove empty directories. This option permits you to remove a directory without specifying recursive, provided  that the directory is empty. | false
