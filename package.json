@@ -1,0 +1,25 @@
+{
+    "name": "owp.rm",
+    "description": "Unix like rm command for node",
+    "version": "1.0.0",
+    "main": "index.js",
+    "files": [
+        "index.js"
+    ],
+    "keywords": [
+        "rm",
+        "remove",
+        "Open Web Project",
+        "owp"
+    ],
+    "author": "Andreas Arvidsson",
+    "license": "MIT",
+    "homepage": "https://github.com/AndreasArvidsson/OpenWebProject-rm",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AndreasArvidsson/OpenWebProject-rm.git"
+    },
+    "bugs": {
+        "url": "https://github.com/AndreasArvidsson/OpenWebProject-rm/issues"
+    }
+}
