@@ -12,7 +12,7 @@ module.exports = async function (path, options = {}) {
 
 async function rm(path, options) {
     try {
-        const stats = await fsPromises.stat(path);
+        const stats = await fsPromises.lstat(path);
         if (stats.isDirectory()) {
             return rmDir(path, options);
         }
