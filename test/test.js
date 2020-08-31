@@ -4,25 +4,28 @@ const rm = require("../index");
 
 console.log("owp.rm: Running tests");
 
-function init() {
+async function init() {
     fs.mkdirSync(path.resolve(__dirname, "dir/subDir"), { recursive: true });
+
     fs.mkdirSync(path.resolve(__dirname, "emptyDir"));
     fs.mkdirSync(path.resolve(__dirname, "emptyDir2"));
+
     fs.writeFileSync(path.resolve(__dirname, "file"), "content");
     fs.writeFileSync(path.resolve(__dirname, "file2"), "content");
-    return new Promise(resolve => {
-        setTimeout(resolve, 500);
-    });
+
+    fs.mkdirSync(path.resolve(__dirname, "dir2/subDir"), { recursive: true });
+    fs.writeFileSync(path.resolve(__dirname, "dir2/file"), "content");
+    fs.writeFileSync(path.resolve(__dirname, "dir2/subDir/file2"), "content");
+
+    fs.mkdirSync(path.resolve(__dirname, "dir3/subDir"), { recursive: true });
+    fs.writeFileSync(path.resolve(__dirname, "dir3/file"), "content");
+    fs.writeFileSync(path.resolve(__dirname, "dir3/subDir/file2"), "content");
 }
 
 function assert(name, expected, found) {
     if (expected !== found) {
-        console.error(`${name}:\nexpected: '${expected}'\nfound: '${found}'`);
+        console.error(`name: '${name}'\nexpected: '${expected}'\nfound: '${found}'`);
     }
-}
-
-function removePath(p) {
-    return p.replace(path.resolve(__dirname) + path.sep, "");
 }
 
 async function assertError(rmPath, options, name, expected) {
@@ -32,9 +35,6 @@ async function assertError(rmPath, options, name, expected) {
     }
     catch (err) {
         error = err;
-    }
-    if (typeof error === "string") {
-        error = removePath(error);
     }
     assert(name, expected, error);
 }
@@ -47,9 +47,6 @@ async function assertResponse(rmPath, options, name, expected) {
     catch (err) {
         console.log(err);
     }
-    if (typeof response === "string") {
-        response = removePath(response);
-    }
     assert(name, expected, response);
 }
 
@@ -57,7 +54,7 @@ async function assertRemoved(rmPath, options, name) {
     try {
         await rm(rmPath, options);
         if (fs.existsSync(rmPath)) {
-            console.log(`'${removePath(rmPath)}' not removed`);
+            console.log(`${name}: '${rmPath}' not removed`);
         }
     }
     catch (err) {
@@ -120,5 +117,23 @@ init().then(() => {
         "removed directory 'emptyDir2'"
     );
 
-    console.log("owp.rm: Tests done");
+    assertResponse(
+        path.resolve(__dirname, "dir2"),
+        { recursive: true, verbose: true },
+        "dir2",
+        `removed 'dir2${path.sep}file'
+removed 'dir2${path.sep}subDir${path.sep}file2'
+removed directory 'dir2${path.sep}subDir'
+removed directory 'dir2'`
+    );
+
+    assertResponse(
+        path.resolve(__dirname, "dir3/*"),
+        { recursive: true, verbose: true },
+        "dir2",
+        `removed 'dir3${path.sep}file'
+removed 'dir3${path.sep}subDir${path.sep}file2'
+removed directory 'dir3${path.sep}subDir'`
+    );
+
 });

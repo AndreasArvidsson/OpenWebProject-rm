@@ -32,6 +32,12 @@ rm("myDir", { verbose: true, recursive: true })
     });
 ```
 
+### Wildcards
+Supports wildcard to remove files inside a directory while keeping the directory itself.
+```javascript
+rm("myDir/*");
+```
+
 ## Options
 
 Option | Description | Default
